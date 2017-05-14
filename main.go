@@ -168,7 +168,7 @@ func main() {
 	players := []rune{'A', 'B', 'C', 'D'}
 	numbers := []rune{'1', '2', '3'}
 
-	gs := newGame(10, players, numbers)
+	gs := newRandomGame(10, players, numbers)
 
 	for turn := 0; ; turn = (turn + 1) % len(players) {
 		if gs.numPlayers(players) <= 1 {
