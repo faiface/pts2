@@ -27,23 +27,30 @@ var (
 	errKickOwn     = errors.New("can't kick own piece")
 )
 
-func newGame(sideLength int, players, numbers []rune) gameState {
-	gs := gameState{length: sideLength * 4}
-	positions := rand.Perm(gs.length)
+func newGame(sideLength int, pieces []piece) gameState {
+	return gameState{
+		length: sideLength * 4,
+		pieces: pieces,
+	}
+}
 
+func newRandomGame(sideLength int, players, numbers []rune) gameState {
+	pieces := make([]piece, 0, len(players)*len(numbers))
+
+	positions := rand.Perm(sideLength * 4)
 	for _, player := range players {
 		for _, number := range numbers {
 			position := positions[0]
 			positions = positions[1:]
 
-			gs.pieces = append(gs.pieces, piece{
+			pieces = append(pieces, piece{
 				pieceName{player, number},
 				position,
 			})
 		}
 	}
 
-	return gs
+	return newGame(sideLength, pieces)
 }
 
 func (gs gameState) moved(name pieceName, amount int) (gameState, error) {
